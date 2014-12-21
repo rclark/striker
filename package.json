@@ -1,7 +1,7 @@
 {
   "name": "striker",
   "version": "0.0.1",
-  "description": "Mapbox Surface API vs. a line",
+  "description": "Given a GeoJSON line, calculate the strike and dip of a best-fit plane for that line.",
   "main": "index.js",
   "scripts": {
     "test": "tape test/*.test.js"
@@ -13,8 +13,8 @@
   "keywords": [
     "geology",
     "mapbox",
-    "surface",
-    "api"
+    "surface api",
+    "turfjs"
   ],
   "author": "Ryan Clark",
   "license": "ISC",
