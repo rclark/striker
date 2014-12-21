@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+var config = require('minimist')(process.argv.slice(2));
+var striker = require('..')(config);
+
+var geojson = config._[0] || '';
+if (geojson) return run();
+
+process.stdin
+  .on('data', function(d) { geojson += d; })
+  .on('end', run);
+
+function run() {
+  geojson = JSON.parse(geojson);
+  striker(geojson, function(err, data) {
+    if (err) throw err;
+    console.log('Strike: %s', data.strike);
+    console.log('Dip: %s', data.dip);
+    process.exit(0);
+  });
+}

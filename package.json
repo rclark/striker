@@ -1,0 +1,37 @@
+{
+  "name": "striker",
+  "version": "1.0.0",
+  "description": "Mapbox Surface API vs. a line",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rclark/striker.git"
+  },
+  "keywords": [
+    "geology",
+    "mapbox",
+    "surface",
+    "api"
+  ],
+  "author": "Ryan Clark",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rclark/striker/issues"
+  },
+  "homepage": "https://github.com/rclark/striker",
+  "dependencies": {
+    "minimist": "^1.1.0",
+    "polyline": "0.0.3",
+    "request": "^2.51.0",
+    "spherical": "^0.1.0",
+    "turf-planepoint": "^1.0.0",
+    "turf-point": "^1.2.0",
+    "underscore": "^1.7.0"
+  },
+  "devDependencies": {
+    "tape": "^3.0.3"
+  }
+}
