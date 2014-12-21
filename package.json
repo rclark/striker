@@ -6,6 +6,9 @@
   "scripts": {
     "test": "tape test/*.test.js"
   },
+  "bin": {
+    "striker": "bin/striker"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/rclark/striker.git"
