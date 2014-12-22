@@ -100,6 +100,7 @@ module.exports = function(config) {
     var d = Infinity;
     var start = Date.now();
     var memo;
+    var duration = 0;
 
     if (config.verbose) {
       console.log(
@@ -115,10 +116,11 @@ module.exports = function(config) {
 
       if (config.verbose) {
         util.print(util.format(
-          '\r\033[KExamining planes... %s @ %s planes/s - Avg err: %sm',
+          '\r\033[KExamining planes... %s @ %s planes/s - Avg err: %sm for %s planes',
           count + 1,
           Math.floor(count / (Date.now() - start) * 1000),
-          Math.ceil(d / surface.length)
+          Math.ceil(d / surface.length),
+          duration
         ));
       }
 
@@ -127,11 +129,15 @@ module.exports = function(config) {
         if (delta > d) break;
       }
 
-      if (delta > d) continue;
+      if (delta > d) {
+        duration++;
+        if (!config.complete && duration > 150000) break;
+        continue;
+      }
+
       d = delta;
       memo = plane;
-
-      // if (!config.complete && Math.ceil(d / surface.length) < 12) break;
+      duration = 0;
     }
 
     return memo;
