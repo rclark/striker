@@ -1,14 +1,14 @@
+var url = require('url');
+var util = require('util');
+
 var request = require('request');
 var polyline = require('polyline');
 var spherical = require('spherical');
-var url = require('url');
 var _ = require('underscore');
-
 var turfpoint = require('turf-point');
 var turfpoly = require('turf-polygon');
 var planepoint = require('turf-planepoint');
-
-var util = require('util');
+var queue = require('queue-async');
 
 module.exports = function(config) {
   config = config || {};
@@ -27,8 +27,13 @@ module.exports = function(config) {
   };
 
   function Striker(geojson, callback) {
-    Striker.surface(Striker.encode(geojson), function(err, surface) {
+    var q = queue();
+    Striker.encode(geojson).forEach(function(line) {
+      q.defer(Striker.surface, line);
+    });
+    q.awaitAll(function(err, surfaces) {
       if (err) return callback(err);
+      var surface = _(surfaces).flatten(true);
       var data = Striker.define(Striker.best(surface));
       callback(null, data);
     });
@@ -40,7 +45,13 @@ module.exports = function(config) {
       geojson.geometry.coordinates;
 
     var points = coords.map(function(point) { return [ point[1], point[0] ]; });
-    return polyline.encode(points);
+
+    var results = [];
+    while (points.length) {
+      results.push(polyline.encode(points.slice(0,300)));
+      points = points.slice(300);
+    }
+    return results;
   };
 
   Striker.surface = function(polyline, callback) {
