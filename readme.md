@@ -1,5 +1,7 @@
 # striker
 
+[![Build Status](https://travis-ci.org/rclark/striker.svg?branch=master)](https://travis-ci.org/rclark/striker)
+
 Given a GeoJSON line, calculate the strike and dip of a best-fit plane for that line.
 
 ## How it works
