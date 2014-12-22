@@ -8,6 +8,8 @@ var turfpoint = require('turf-point');
 var turfpoly = require('turf-polygon');
 var planepoint = require('turf-planepoint');
 
+var util = require('util');
+
 module.exports = function(config) {
   config = config || {};
 
@@ -46,6 +48,12 @@ module.exports = function(config) {
 
     request({ url: url.format(uri), json: true }, function(err, res, json) {
       if (err) return callback(err);
+      if (res.statusCode !== 200) {
+        err = new Error(JSON.stringify(res.body));
+        err.statusCode = res.statusCode;
+        return callback(err);
+      }
+
       var result = json.results.map(function(data) {
         return [ data.latlng.lng, data.latlng.lat, data[field] ];
       });
@@ -75,23 +83,47 @@ module.exports = function(config) {
     return Math.abs(found - point[2]);
   };
 
-  Striker.delta = function(plane, surface) {
-    return surface.reduce(function(memo, point) {
-      memo += Striker.planepoint(plane, point);
-      return memo;
-    }, 0) / surface.length;
-  };
-
   Striker.best = function(surface) {
+    var planes = Striker.planes(surface);
+
     var d = Infinity;
-    return Striker.planes(surface).reduce(function(memo, plane) {
-      var delta = Striker.delta(plane, surface);
-      if (delta < d) {
-        d = delta;
-        memo = plane;
+    var start = Date.now();
+    var memo;
+
+    if (config.verbose) {
+      console.log(
+        'Finding the best of %s planes for %s points',
+        planes.length,
+        surface.length
+      );
+    }
+
+    for (var count = 0; count < planes.length; count++) {
+      var plane = planes[count];
+      var delta = 0;
+
+      if (config.verbose) {
+        util.print(util.format(
+          '\r\033[KExamining planes... %s @ %s planes/s - Avg err: %sm',
+          count + 1,
+          Math.floor(count / (Date.now() - start) * 1000),
+          Math.ceil(d / surface.length)
+        ));
       }
-      return memo;
-    });
+
+      for (var i = 0; i < surface.length; i++) {
+        delta += Striker.planepoint(plane, surface[i]);
+        if (delta > d) break;
+      }
+
+      if (delta > d) continue;
+      d = delta;
+      memo = plane;
+
+      // if (!config.complete && Math.ceil(d / surface.length) < 12) break;
+    }
+
+    return memo;
   };
 
   Striker.define = function(plane) {

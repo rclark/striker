@@ -64,13 +64,6 @@ test('planepoint', function(t) {
   t.end();
 });
 
-test('delta', function(t) {
-  var plane = fixtures.simple.properties.planes[0];
-  var surface = fixtures.simple.properties.surface;
-  t.approx(striker.delta(plane, surface), 0, 'expected delta');
-  t.end();
-});
-
 test('best', function(t) {
   var found = striker.best(fixtures.sloped.properties.surface);
   t.deepEqual(found, fixtures.sloped.properties.best, 'expected best surface');

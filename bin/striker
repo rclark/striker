@@ -5,6 +5,7 @@ var striker = require('..')(config);
 
 var geojson = config._[0] || '';
 if (geojson) return run();
+config.verbose = !config.quiet;
 
 process.stdin
   .on('data', function(d) { geojson += d; })
@@ -14,7 +15,7 @@ function run() {
   geojson = JSON.parse(geojson);
   striker(geojson, function(err, data) {
     if (err) throw err;
-    console.log('Strike: %s', data.strike);
+    console.log('%sStrike: %s', config.verbose ? '\n' : '', data.strike);
     console.log('Dip: %s', data.dip);
     process.exit(0);
   });
