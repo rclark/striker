@@ -2,3 +2,6 @@ language: node_js
 node_js:
 - '0.10.33'
 sudo: false
+env:
+  global:
+    secure: I6ZHhG7x+5Mf2ORP7o6jVw4QLWOgNTTF6oXnlv3+DWUHyuivRuYQt+0x3be1E8LYdPwasMXWdCITtuLIkmtCTOMOqTD5zpU9tSFshRQTG7k3Qmjf1aXr36hRBNrWrj58ZhlWRu+E1y0dgcmmu1odNXJ13k0xthnI7Ksn4PDUG6o=
