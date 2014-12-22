@@ -33,6 +33,7 @@
     "spherical": "^0.1.0",
     "turf-planepoint": "^1.0.0",
     "turf-point": "^1.2.0",
+    "turf-polygon": "^1.0.0",
     "underscore": "^1.7.0"
   },
   "devDependencies": {
