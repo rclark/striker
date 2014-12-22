@@ -2,10 +2,11 @@
 
 var config = require('minimist')(process.argv.slice(2));
 var striker = require('..')(config);
+config.verbose = !config.quiet;
 
 var geojson = config._[0] || '';
 if (geojson) return run();
-config.verbose = !config.quiet;
+
 
 process.stdin
   .on('data', function(d) { geojson += d; })

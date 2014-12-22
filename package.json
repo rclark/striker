@@ -1,6 +1,6 @@
 {
   "name": "striker",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Given a GeoJSON line, calculate the strike and dip of a best-fit plane for that line.",
   "main": "index.js",
   "scripts": {
